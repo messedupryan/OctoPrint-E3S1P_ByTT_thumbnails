@@ -1,0 +1,24 @@
+/* #e3s1proforkbytt_thumbnail_viewer {
+	width: 330px;
+	margin-left: -165px;
+} */
+
+#e3s1proforkbytt_thumbnail_viewer h3 {
+	overflow: hidden;
+}
+
+#files .gcode_files .entry {
+	overflow: hidden;
+}
+
+#files .gcode_files .entry img, #e3s1proforkbytt_state_thumbnail img {
+	width: auto;
+}
+
+.inline_e3s1proforkbytt_thumbnail.pull-left, #e3s1proforkbytt_state_thumbnail.pull-left {
+	padding-right: 5px;
+}
+
+#e3s1proforkbytt_state_thumbnail.pull-left img {
+	width: 100%;
+}

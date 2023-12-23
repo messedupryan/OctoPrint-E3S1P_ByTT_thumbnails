@@ -4,21 +4,21 @@
 ### Do not forget to adjust the following variables to your own plugin.
 
 # The plugin's identifier, has to be unique
-plugin_identifier = "prusaslicerthumbnails"
+plugin_identifier = "e3s1proforkbyttthumbnails"
 
 # The plugin's python package, should be "octoprint_<plugin identifier>", has to be unique
-plugin_package = "octoprint_prusaslicerthumbnails"
+plugin_package = "octoprint_e3s1proforkbyttthumbnails"
 
 # The plugin's human readable name. Can be overwritten within OctoPrint's internal data via __plugin_name__ in the
 # plugin module
-plugin_name = "Slicer Thumbnails"
+plugin_name = "E3S1PROFORKBYTT Thumbnails"
 
 # The plugin's version. Can be overwritten within OctoPrint's internal data via __plugin_version__ in the plugin module
-plugin_version = "1.2.0"
+plugin_version = "2.2.0"
 
 # The plugin's description. Can be overwritten within OctoPrint's internal data via __plugin_description__ in the plugin
 # module
-plugin_description = """Plugin that extracts thumbnails from uploaded gcode files sliced by PrusaSlicer."""
+plugin_description = """Plugin modified by Thomas Toka that extracts thumbnails from uploaded gcode files sliced by PrusaSlicer 2.8, OrcaSlicer 1.8, Cura 5, CrealitySlicer 4.8.2, SuperSlicer."""
 
 # The plugin's author. Can be overwritten within OctoPrint's internal data via __plugin_author__ in the plugin module
 plugin_author = "jneilliii"
