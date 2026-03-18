@@ -1,4 +1,4 @@
 include README.md
-recursive-include octoprint_e3s1proforkbyttthumbnails/templates *
-recursive-include octoprint_e3s1proforkbyttthumbnails/translations *
-recursive-include octoprint_e3s1proforkbyttthumbnails/static *
+recursive-include octoprint_e3s1p_bytt_thumbnails/templates *
+recursive-include octoprint_e3s1p_bytt_thumbnails/translations *
+recursive-include octoprint_e3s1p_bytt_thumbnails/static *

@@ -1,0 +1,23 @@
+[build-system]
+requires = [
+  "setuptools>=40.8.0",
+  "wheel",
+  "OctoPrint>=1.9",
+]
+build-backend = "setuptools.build_meta"
+
+[tool.black]
+line-length = 88
+target-version = ["py311"]
+
+[tool.ruff]
+line-length = 88
+target-version = "py311"
+src = ["octoprint_e3s1p_bytt_thumbnails", "tests"]
+
+[tool.ruff.lint]
+select = ["F"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]

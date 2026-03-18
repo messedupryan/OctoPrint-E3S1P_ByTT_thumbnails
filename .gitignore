@@ -1,3 +1,4 @@
+___pycache__/
 *.pyc
 *.swp
 .idea
@@ -8,3 +9,4 @@ dist
 .DS_Store
 *.zip
 /git-flow-plus.config
+*.zip

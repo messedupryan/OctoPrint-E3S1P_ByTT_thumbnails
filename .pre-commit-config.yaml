@@ -1,0 +1,21 @@
+repos:
+  - repo: local
+    hooks:
+      - id: pytest
+        name: pytest
+        entry: .venv/bin/python -m pytest
+        language: system
+        pass_filenames: false
+        stages: [pre-push]
+      - id: ruff
+        name: ruff
+        entry: .venv/bin/python -m ruff check --fix --quiet
+        language: system
+        stages: [pre-commit]
+        types_or: [python, pyi]
+      - id: black
+        name: black
+        entry: .venv/bin/python -m black -q
+        language: system
+        stages: [pre-commit]
+        types_or: [python, pyi]
