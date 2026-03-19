@@ -2,9 +2,8 @@ name: Build Plugin
 
 on:
   push:
-    branches:
-      - preview
     tags:
+      - "v*-preview*"
       - "v*"
 
 permissions:
@@ -12,9 +11,9 @@ permissions:
 
 jobs:
   preview:
-    if: github.ref == 'refs/heads/preview'
+    if: startsWith(github.ref, 'refs/tags/v') && contains(github.ref_name, '-preview')
     runs-on: ubuntu-latest
-
+    
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -25,41 +24,45 @@ jobs:
         shell: bash
         run: |
           mkdir -p dist
+          TAG=${GITHUB_REF_NAME}
+
           git archive \
             --format=zip \
-            --output=dist/OctoPrint-E3S1P_ByTT_thumbnails-preview.zip \
+            --output=dist/OctoPrint-E3S1P_ByTT_thumbnails-${TAG}.zip \
             --prefix=OctoPrint-E3S1P_ByTT_thumbnails/ \
             "$GITHUB_SHA"
+          cp dist/OctoPrint-E3S1P_ByTT_thumbnails-${TAG}.zip \
+            dist/OctoPrint-E3S1P_ByTT_thumbnails-preview-latest.zip
 
       - name: Upload preview artifact
         uses: actions/upload-artifact@v4
         with:
           name: preview-plugin-zip
-          path: dist/OctoPrint-E3S1P_ByTT_thumbnails-preview.zip
+          path: dist/*.zip
 
-      - name: Move preview tag to latest preview commit
-        shell: bash
+      - name: Test install
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git tag -f preview "$GITHUB_SHA"
-          git push origin refs/tags/preview --force
+          python -m venv venv
+          source venv/bin/activate
+          pip install --upgrade pip
+          pip install dist/*-${GITHUB_REF_NAME}.zip
 
       - name: Publish preview prerelease
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: preview
-          name: Preview Build
+          tag_name: ${{ github.ref_name }}
+          name: Preview ${{ github.ref_name }}
           prerelease: true
           make_latest: false
           overwrite_files: true
-          files: dist/OctoPrint-E3S1P_ByTT_thumbnails-preview.zip
+          files: dist/*.zip
           body: |
-            Rolling preview build from `${{ github.sha }}` on the `preview` branch.
+            Preview build from `${{ github.sha }}` (tag: `${{ github.ref_name }}`)
 
   release:
-    if: startsWith(github.ref, 'refs/tags/v')
+    if: startsWith(github.ref, 'refs/tags/v') && !contains(github.ref_name, '-preview')
     runs-on: ubuntu-latest
+    
 
     steps:
       - name: Check out repository
@@ -73,7 +76,16 @@ jobs:
       - name: Verify tag matches plugin version
         shell: bash
         run: |
-          plugin_version="$(python3 -c "import pathlib, re; print(re.search(r'^plugin_version = \"([^\"]+)\"', pathlib.Path('setup.py').read_text(), re.M).group(1))")"
+          plugin_version=$(python3 - <<'EOF'
+          import pathlib, re, sys
+          text = pathlib.Path("setup.py").read_text()
+          m = re.search(r'^plugin_version = "([^"]+)"', text, re.M)
+          if not m:
+              print("ERROR: plugin_version not found in setup.py")
+              sys.exit(1)
+          print(m.group(1))
+          EOF
+          )
           expected_tag="v${plugin_version}"
 
           if [[ "${GITHUB_REF_NAME}" != "${expected_tag}" ]]; then
@@ -93,21 +105,36 @@ jobs:
         shell: bash
         run: |
           mkdir -p dist
+          TAG=${GITHUB_REF_NAME}
           git archive \
             --format=zip \
-            --output=dist/OctoPrint-E3S1P_ByTT_thumbnails.zip \
+            --output=dist/OctoPrint-E3S1P_ByTT_thumbnails-${TAG}.zip \
             --prefix=OctoPrint-E3S1P_ByTT_thumbnails/ \
             "$GITHUB_SHA"
+          cp dist/OctoPrint-E3S1P_ByTT_thumbnails-${TAG}.zip \
+            dist/OctoPrint-E3S1P_ByTT_thumbnails-latest.zip
 
       - name: Upload release artifact
         uses: actions/upload-artifact@v4
         with:
           name: release-plugin-zip
-          path: dist/OctoPrint-E3S1P_ByTT_thumbnails.zip
+          path: dist/*.zip
+
+      - name: Test install
+        run: |
+          python -m venv venv
+          source venv/bin/activate
+          pip install --upgrade pip
+          pip install dist/*-${GITHUB_REF_NAME}.zip
 
       - name: Publish GitHub release
         uses: softprops/action-gh-release@v2
         with:
-          files: dist/OctoPrint-E3S1P_ByTT_thumbnails.zip
+          name: Release ${{ github.ref_name }}
+          files: dist/*.zip
           overwrite_files: true
           generate_release_notes: true
+          body: |
+            Install latest:
+            https://github.com/messedupryan/OctoPrint-E3S1P_ByTT_thumbnails/releases/latest/download/OctoPrint-E3S1P_ByTT_thumbnails-latest.zip
+

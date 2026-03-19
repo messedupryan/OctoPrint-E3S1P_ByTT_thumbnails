@@ -96,7 +96,11 @@ Choose the script that matches the slicer and version you are using. The links b
 After version `1.0.0` is released:
 
 ```id="a5"
+<<<<<<< HEAD
 https://github.com/messedupryan/OctoPrint-E3S1P_ByTT_thumbnails/releases/latest
+=======
+https://github.com/ThomasToka/OctoPrint-PrusaSlicerThumbnails/releases/latest/download/OctoPrint-E3S1P_ByTT_thumbnails-latest.zip
+>>>>>>> master
 ```
 
 Install via:
@@ -110,10 +114,8 @@ Install via:
 You can install the latest preview build here:
 
 ```id="a6"
-https://github.com/messedupryan/OctoPrint-E3S1P_ByTT_thumbnails/releases/download/preview/OctoPrint-E3S1P_ByTT_thumbnails-preview.zip
+https://github.com/ThomasToka/OctoPrint-PrusaSlicerThumbnails/releases/latest/download/OctoPrint-E3S1P_ByTT_thumbnails-preview-latest.zip
 ```
-
-This version is automatically updated from the latest development branch.
 
 ---
 
